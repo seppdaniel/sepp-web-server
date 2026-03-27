@@ -1,10 +1,11 @@
 {
   "routes": [
-    { "handle": "filesystem" },
     { "src": "/css/(.*)", "dest": "/api/index.py" },
     { "src": "/js/(.*)", "dest": "/api/index.py" },
     { "src": "/images/(.*)", "dest": "/api/index.py" },
     { "src": "/server-background.JPG", "dest": "/api/index.py" },
+    { "src": "/upload", "dest": "/api/index.py" },
+    { "src": "/api/images", "dest": "/api/index.py" },
     { "src": "/(.*)", "dest": "/api/index.py" }
   ]
 }
