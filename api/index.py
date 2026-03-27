@@ -3,16 +3,27 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from pathlib import Path
 import time
+import json
 
 app = FastAPI(title="Sepp Web Server")
 
-# Detect base directory - Vercel uses /var/task for Python
-if os.path.exists('/var/task'):
-    BASE_DIR = Path('/var/task')
-elif os.path.exists('/vercel/path1'):
-    BASE_DIR = Path('/vercel/path1')
-else:
-    BASE_DIR = Path(os.environ.get('VERCEL_PATH', os.getcwd()))
+# Try different Vercel paths
+possible_paths = [
+    Path("/var/task"),
+    Path("/vercel/path1"),
+    Path("/vercel/path0"),
+    Path(os.environ.get('VERCEL_PATH', '')),
+    Path(os.getcwd()),
+]
+
+BASE_DIR = None
+for p in possible_paths:
+    if p.exists() and (p / "public").exists():
+        BASE_DIR = p
+        break
+
+if BASE_DIR is None:
+    BASE_DIR = Path(os.getcwd())
 
 PUBLIC_DIR = BASE_DIR / "public"
 IMAGES_DIR = PUBLIC_DIR / "images"
