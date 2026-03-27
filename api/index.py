@@ -86,23 +86,15 @@ def render_template(images):
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
+    debug_info = f"DEBUG: BASE_DIR={BASE_DIR}, PUBLIC_DIR={PUBLIC_DIR}, PUBLIC exists: {PUBLIC_DIR.exists()}, TEMPLATES exists: {TEMPLATES_DIR.exists()}"
+    
     public_exists = PUBLIC_DIR.exists()
     images_dir_exists = (PUBLIC_DIR / "images").exists() if public_exists else False
     
     images = get_images()
     template = render_template(images)
     
-    if len(images) == 0:
-        files_info = f"PUBLIC_DIR exists: {public_exists}, images dir: {images_dir_exists}"
-        if public_exists:
-            try:
-                all_files = list(PUBLIC_DIR.rglob("*"))
-                files_info += f", all files: {[str(f.relative_to(BASE_DIR)) for f in all_files[:10]]}"
-            except Exception as e:
-                files_info += f", error: {e}"
-        return HTMLResponse(f"DEBUG: BASE_DIR={BASE_DIR}<br>{files_info}<br><br>" + template)
-    
-    return HTMLResponse(template)
+    return HTMLResponse(f"{debug_info}<br>Images found: {len(images)}<br><br>" + template)
 
 
 @app.post("/upload")
