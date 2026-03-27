@@ -75,6 +75,11 @@ def render_template(images):
 async def root():
     images = get_images()
     template = render_template(images)
+    
+    # Debug
+    print(f"PUBLIC_DIR: {PUBLIC_DIR}")
+    print(f"Images found: {len(images)}")
+    
     return HTMLResponse(template)
 
 
