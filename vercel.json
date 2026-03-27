@@ -1,14 +1,10 @@
 {
-  "buildCommand": "pip install -r requirements.txt",
-  "outputDirectory": "public",
-  "framework": null,
-  "functions": {
-    "api/index.py": {
-      "runtime": "python3.12",
-      "maxDuration": 60
-    }
-  },
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index.py" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/css/(.*)", "dest": "/api/index.py" },
+    { "src": "/js/(.*)", "dest": "/api/index.py" },
+    { "src": "/images/(.*)", "dest": "/api/index.py" },
+    { "src": "/server-background.JPG", "dest": "/api/index.py" },
+    { "src": "/(.*)", "dest": "/api/index.py" }
   ]
 }
