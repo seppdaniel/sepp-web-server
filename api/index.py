@@ -75,86 +75,8 @@ def render_template(images):
 async def root():
     images = get_images()
     
-    # Build gallery items HTML
-    items_html = ""
-    for img in images:
-        items_html += f'''
-        <div class="gallery-item" data-src="{img["url"]}">
-            <img src="{img["url"]}" alt="{img["name"]}">
-            <div class="gallery-item-info">
-                <span>{img["name"]}</span>
-            </div>
-        </div>'''
-    
-    if not items_html:
-        items_html = '<p class="no-images">Nenhuma imagem encontrada.</p>'
-    
-    # DEBUG: unique marker
-    debug = "<!-- RENDERED_AT_2026 -->"
-    
-    # Inline complete HTML template
-    template = debug + f'''<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sepp Web Server</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/gallery.js" defer></script>
-</head>
-<body>
-    <div class="overlay"></div>
-    <header>
-        <h1>✦ Sepp Web Server</h1>
-        <p>Galeria de imagens criadas por Daniel Sepp</p>
-    </header>
-    <main>
-        <section class="hero">
-            <div class="glass-card">
-                <h2>Bem-vindo ao Sepp Web Server</h2>
-                <p>Seu espaço para imagens e criações</p>
-            </div>
-        </section>
-    </main>
-    <button class="fab" id="galleryBtn" aria-label="Abrir galeria">✨ Galeria Sepp</button>
-    <aside class="gallery-panel" id="galleryPanel">
-        <button class="gallery-close" id="galleryClose" aria-label="Fechar galeria">×</button>
-        <h3>Galeria de Imagens</h3>
-        <div class="upload-section">
-            <form id="uploadForm" class="upload-form">
-                <div class="upload-dropzone" id="dropzone">
-                    <span class="upload-icon">📤</span>
-                    <span>Arraste imagem ou clique</span>
-                    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.gif" hidden>
-                </div>
-                <div class="upload-preview" id="uploadPreview" hidden>
-                    <img id="previewImg" src="" alt="Preview">
-                    <button type="button" id="cancelUpload">✕</button>
-                </div>
-                <button type="submit" class="upload-btn" id="uploadBtn" hidden>Enviar</button>
-                <div class="upload-progress" id="uploadProgress" hidden>
-                    <div class="progress-bar"><div class="progress-fill"></div></div>
-                    <span>Enviando...</span>
-                </div>
-            </form>
-        </div>
-        <div class="trash-zone" id="trashZone">
-            <span class="trash-icon">🗑️</span>
-            <span>Arraste aqui para excluir</span>
-        </div>
-        <div class="gallery-grid" id="galleryGrid">{items_html}</div>
-    </aside>
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" id="lightboxClose" aria-label="Fechar">×</button>
-        <img src="" alt="Imagem ampliada" id="lightboxImg">
-    </div>
-</body>
-</html>'''
-    
-    return HTMLResponse(template)
+    # FORCE CHECK - this should always print
+    return HTMLResponse(f"DEBUG: images count = {len(images)}")
 
 
 @app.post("/upload")
