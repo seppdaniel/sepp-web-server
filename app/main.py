@@ -135,6 +135,32 @@ async def list_images():
     return get_images_from_public()
 
 
+@app.delete("/api/images")
+async def delete_image(data: dict):
+    """Delete image by URL."""
+    url = data.get("url", "")
+    
+    if not url:
+        return JSONResponse({"success": False, "error": "URL requerida"}, status_code=400)
+    
+    # Extract filename from URL
+    filename = url.lstrip("/")
+    file_path = BASE_DIR / "public" / filename
+    
+    if not file_path.exists() or not file_path.is_file():
+        return JSONResponse({"success": False, "error": "Arquivo não encontrado"}, status_code=404)
+    
+    # Don't allow deleting server-background.JPG
+    if "server-background" in filename.lower():
+        return JSONResponse({"success": False, "error": "Não é possível excluir o wallpaper"}, status_code=403)
+    
+    try:
+        file_path.unlink()
+        return {"success": True, "message": "Imagem excluída"}
+    except Exception as e:
+        return JSONResponse({"success": False, "error": str(e)}, status_code=500)
+
+
 @app.get("/{file_path:path}")
 async def serve_file(file_path: str):
     full_path = BASE_DIR / "public" / file_path

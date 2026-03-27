@@ -54,6 +54,11 @@
             </form>
         </div>
 
+        <div class="trash-zone" id="trashZone">
+            <span class="trash-icon">🗑️</span>
+            <span>Arraste aqui para excluir</span>
+        </div>
+
         <div class="gallery-grid" id="galleryGrid">
             {% for image in images %}
             <div class="gallery-item" data-src="{{ image.url }}">
