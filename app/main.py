@@ -27,6 +27,9 @@ def get_images_from_public():
         if file_path.is_file():
             ext = file_path.suffix.lower()
             if ext in VALID_EXTENSIONS:
+                # Skip background image from gallery
+                if "background" in file_path.name.lower():
+                    continue
                 rel_path = file_path.relative_to(public_dir)
                 url_path = "/" + str(rel_path).replace("\\", "/")
                 name = file_path.stem.replace("-", " ").replace("_", " ")
