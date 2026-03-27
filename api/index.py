@@ -6,8 +6,10 @@ import time
 
 app = FastAPI(title="Sepp Web Server")
 
-# Detect base directory - Vercel uses /vercel/path1
-if os.path.exists('/vercel/path1'):
+# Detect base directory - Vercel uses /var/task for Python
+if os.path.exists('/var/task'):
+    BASE_DIR = Path('/var/task')
+elif os.path.exists('/vercel/path1'):
     BASE_DIR = Path('/vercel/path1')
 else:
     BASE_DIR = Path(os.environ.get('VERCEL_PATH', os.getcwd()))
@@ -76,11 +78,7 @@ async def root():
     images = get_images()
     template = render_template(images)
     
-    # Debug
-    print(f"PUBLIC_DIR: {PUBLIC_DIR}")
-    print(f"Images found: {len(images)}")
-    
-    return HTMLResponse(template)
+    return HTMLResponse(f"DEBUG: BASE_DIR={BASE_DIR}, PUBLIC_DIR={PUBLIC_DIR}, Images={len(images)}<br>" + template if len(images) == 0 else template)
 
 
 @app.post("/upload")
