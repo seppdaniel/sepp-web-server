@@ -74,9 +74,8 @@ def render_template(images):
 @app.get("/", response_class=HTMLResponse)
 async def root():
     images = get_images()
-    
-    # FORCE CHECK - this should always print
-    return HTMLResponse(f"DEBUG: images count = {len(images)}")
+    template = render_template(images)
+    return HTMLResponse(template)
 
 
 @app.post("/upload")
@@ -158,10 +157,9 @@ async def serve_images(filename: str):
 
 @app.get("/{path:path}")
 async def serve(path: str):
-    # Try to serve static files from public directory
     fp = PUBLIC_DIR / path
     if fp.is_file():
         return FileResponse(fp)
     
-    # Fallback to index.html
-    return HTMLResponse(template)
+    images = get_images()
+    return HTMLResponse(render_template(images))
