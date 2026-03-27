@@ -183,7 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
         trashZone.classList.remove('drag-over');
         
         const url = e.dataTransfer.getData('text/plain');
-        if (!url || !draggedItem) return;
+        
+        // Find the gallery item with this URL
+        const items = document.querySelectorAll('.gallery-item');
+        const targetItem = Array.from(items).find(item => item.dataset.src === url);
+        
+        if (!url || !targetItem) return;
 
         // Show confirmation
         if (confirm('Excluir esta imagem?')) {
@@ -196,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await resp.json();
 
                 if (data.success) {
-                    draggedItem.remove();
+                    targetItem.remove();
                     showToast('Imagem excluída!', '#ff5252');
                 } else {
                     alert(data.error || 'Erro ao excluir');

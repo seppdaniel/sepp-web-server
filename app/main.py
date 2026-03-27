@@ -150,10 +150,6 @@ async def delete_image(data: dict):
     if not file_path.exists() or not file_path.is_file():
         return JSONResponse({"success": False, "error": "Arquivo não encontrado"}, status_code=404)
     
-    # Don't allow deleting server-background.JPG
-    if "server-background" in filename.lower():
-        return JSONResponse({"success": False, "error": "Não é possível excluir o wallpaper"}, status_code=403)
-    
     try:
         file_path.unlink()
         return {"success": True, "message": "Imagem excluída"}
